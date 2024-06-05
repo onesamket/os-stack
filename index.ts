@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// #!/usr/bin/env bun
 import { Command } from "commander";
 import * as inquirer from "inquirer";
 import chalk from "chalk";
@@ -15,19 +14,21 @@ interface Answers {
 
 const git = simpleGit();
 
+const repoUrl = "https://github.com/onesamket/tw-stack.git";
 const templates: { [key: string]: string } = {
-  NextJS: "https://github.com/onesamket/nextjs.git",
-  Remix: "https://github.com/onesamket/remix.git",
-  MERN: "https://github.com/onesamket/tw-stack.git",
-  "SPA React": "https://github.com/onesamket/spa.git",
-  Expo: "https://github.com/onesamket/expo.git",
-  "React-Hono.js Full-stack": "https://github.com/onesamket/honojs.git",
-  "React-Hapi.js Full-stack": "https://github.com/onesamket/hapi.git",
+  "✨ - Nextjs Framework": "nextjs",
+  "⚡ - Remix framework": "remix",
+  "⚡ - Bun with HTMX": "bun-htmx",
+  "🏗️ - MERN stack": "mern",
+  "🌐 - SPA React": "react-spa",
+  "📱 - React native with expo 51": "expo",
+  "🔥 - React-Hono.js full-stack": "react-hono",
+  "😀 - react-hapi.js full-stack": "react-hapi",
 };
 
 program
-  .version("1.0.0")
-  .description("scaffold Pre configured projects with tw-stack");
+  .version("0.0.1")
+  .description("Scaffold pre-configured projects with tw-stack");
 
 program
   .command("create [project-name]")
@@ -66,18 +67,29 @@ program
       }
     }
 
-    await cloneTemplate(answers.template, projectPath);
+    await cloneTemplate(templates[answers.template], projectPath);
 
     console.log(chalk.green(`Project ${projectName} created successfully.`));
+    console.log(chalk.blue(`Navigate to your project directory:`));
+    console.log(chalk.blue(`Install dependencies using Bun:`));
+    console.log(chalk.yellow(`bun install`));
   });
 
-async function cloneTemplate(templateName: string, targetPath: string) {
-  const repoUrl = templates[templateName];
-
+async function cloneTemplate(branchName: string, targetPath: string) {
   try {
     console.log(chalk.blue(`Cloning repository from ${repoUrl}...`));
-    await git.clone(repoUrl, targetPath);
+    await git.clone(repoUrl, targetPath, [
+      `--branch=${branchName}`,
+      `--single-branch`,
+    ]);
     console.log(chalk.green("Repository cloned successfully."));
+    console.log(chalk.green(`cd ${targetPath}`));
+    console.log(chalk.green(`bun install`));
+    console.log(
+      chalk.bgBlue.white(
+        `Checkout GitHub repository: https://github.com/onesamket/tw-stack`
+      )
+    );
   } catch (err) {
     console.error(chalk.red(`Error cloning repository: ${err}`));
     process.exit(1);
