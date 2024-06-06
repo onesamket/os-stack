@@ -1,10 +1,10 @@
 {
-  "name": "os-stack",
-  "version": "0.0.2",
-  "description": "CLI tool for scaffolding pre-configured projects with tw-stack",
+  "name": "tw-stack",
+  "version": "0.0.1",
+  "description": "CLI tool for scaffold pre-configured projects with tw-stack",
   "main": "dist/index.js",
   "bin": {
-    "os-stack": "dist/index.js"
+    "tw-stack": "dist/index.js"
   },
   "scripts": {
     "start": "node dist/index.js",
